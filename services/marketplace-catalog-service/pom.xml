@@ -31,16 +31,9 @@
             <dependency>
                 <groupId>com.marketplace</groupId>
                 <artifactId>mp-common-bom</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0.0</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <!-- Temporary until moved to BOM -->
-            <dependency>
-                <groupId>com.marketplace</groupId>
-                <artifactId>mp-common-errors</artifactId>
-                <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <!-- internal modules -->
