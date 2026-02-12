@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.marketplace</groupId>
         <artifactId>marketplace-common-lib</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>mp-common-bom</artifactId>
@@ -19,6 +19,7 @@
         <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
 
         <mybatis.version>3.0.3</mybatis.version>
+        <liquibase.mongo.version>5.0.1</liquibase.mongo.version>
 
         <swagger.annotations.version>2.2.21</swagger.annotations.version>
         <jackson.nullable.version>0.2.6</jackson.nullable.version>
@@ -69,6 +70,11 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.liquibase.ext</groupId>
+                <artifactId>liquibase-mongodb</artifactId>
+                <version>${liquibase.mongo.version}</version>
+            </dependency>
 
             <!-- OpenAPI -->
             <dependency>
@@ -103,6 +109,11 @@
             <dependency>
                 <groupId>com.marketplace</groupId>
                 <artifactId>mp-common-errors</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.marketplace</groupId>
+                <artifactId>mp-common-kafka</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

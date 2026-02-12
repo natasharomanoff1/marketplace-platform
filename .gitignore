@@ -21,3 +21,11 @@ Thumbs.db
 .env.*
 
 pom.xml.versionsBackup
+
+**/mvnw
+**/mvnw.cmd
+**/.mvn/
+!.mvn/
+!mvnw
+!mvnw.cmd
+
