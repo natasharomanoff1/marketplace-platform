@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-provisionings-collection
+      author: provisioning-service
+      changes:
+        - createCollection:
+            collectionName: provisionings
+
+  - changeSet:
+      id: 002-create-orderId-index
+      author: provisioning-service
+      changes:
+        - createIndex:
+            collectionName: provisionings
+            keys:
+              orderId: 1
+            options:
+              name: idx_provisionings_orderId
+              unique: true
+
+  - changeSet:
+      id: 003-create-buyerId-index
+      author: provisioning-service
+      changes:
+        - createIndex:
+            collectionName: provisionings
+            keys:
+              buyerId: 1
+            options:
+              name: idx_provisionings_buyerId
+
+  - changeSet:
+      id: 004-create-accessToken-index
+      author: provisioning-service
+      changes:
+        - createIndex:
+            collectionName: provisionings
+            keys:
+              items.accessToken: 1
+            options:
+              name: idx_provisionings_accessToken

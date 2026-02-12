@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.marketplace.provisioning</groupId>
+        <artifactId>provisioning-service</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>domain</artifactId>
+    <name>Provisioning Service - Domain</name>
+
+    <dependencies>
+        <!-- Lombok (domain entities/value objects) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- MP libs -->
+        <dependency>
+            <groupId>com.marketplace</groupId>
+            <artifactId>mp-common-errors</artifactId>
+        </dependency>
+    </dependencies>
+</project>

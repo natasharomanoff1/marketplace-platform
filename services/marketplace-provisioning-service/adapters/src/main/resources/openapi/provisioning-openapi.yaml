@@ -1,0 +1,191 @@
+openapi: 3.0.3
+info:
+  title: Marketplace Provisioning Service API
+  description: API responsible for provisioning purchased products to buyers after successful payment.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8082
+    description: Local environment
+
+tags:
+  - name: Provisionings
+    description: Provisioning retrieval endpoints
+  - name: Access
+    description: Access token validation endpoints
+
+paths:
+
+  /provisionings/order/{orderId}:
+    get:
+      tags: [Provisioning]
+      summary: Get provisioning by orderId
+      operationId: getProvisioningByOrderId
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Provisioning found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        '404':
+          description: Provisioning not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /provisionings/buyer/{buyerId}:
+    get:
+      tags: [Provisioning]
+      summary: Get provisionings by buyerId
+      operationId: getProvisioningsByBuyerId
+      parameters:
+        - name: buyerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of provisionings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProvisioningResponse'
+
+  /provisionings/{id}:
+    get:
+      tags: [Provisioning]
+      summary: Get provisioning by id
+      operationId: getProvisioningById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Provisioning found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /access/{token}:
+    get:
+      tags: [Access]
+      summary: Validate access token
+      operationId: validateAccessToken
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessValidationResponse'
+        '404':
+          description: Token not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  schemas:
+
+    ProvisioningResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        orderId:
+          type: string
+        buyerId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisioningItem'
+      required:
+        - id
+        - orderId
+        - buyerId
+        - items
+        - createdAt
+
+    ProvisioningItem:
+      type: object
+      properties:
+        productId:
+          type: string
+        type:
+          type: string
+          description: Provisioning type
+          example: DIGITAL_ACCESS
+        status:
+          type: string
+          example: READY
+        accessToken:
+          type: string
+          nullable: true
+        shipmentId:
+          type: string
+          nullable: true
+      required:
+        - productId
+        - type
+        - status
+
+    AccessValidationResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        productId:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required:
+        - valid
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - message
+        - timestamp

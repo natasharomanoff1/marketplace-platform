@@ -1,0 +1,9 @@
+spring:
+  liquibase:
+    enabled: true
+
+logging:
+  level:
+    root: INFO
+    liquibase: DEBUG
+    org.testcontainers: INFO
