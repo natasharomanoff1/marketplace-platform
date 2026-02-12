@@ -1,4 +1,4 @@
-package com.marketplace.catalogservice.adapters.out.adapter;
+package com.marketplace.catalogservice.adapters.out.persistence.adapter;
 
 import com.marketplace.catalogservice.adapters.out.persistence.adapter.ListingRepositoryAdapter;
 import com.marketplace.catalogservice.adapters.out.persistence.entity.ListingEntity;
