@@ -18,6 +18,8 @@ Key technologies used across the platform:
 - Spring Boot
 - Spring WebFlux
 - Spring Data (R2DBC / JPA)
+- MongoDB
+- Kafka
 - PostgreSQL
 - Maven multi-module builds
 - Docker
@@ -35,6 +37,13 @@ Responsible for managing marketplace listings, including:
 - preview images management
 - publishing lifecycle
 
+### Provisioning Service
+Responsible for provisioning purchased products to buyers after successful payment, including:
+
+- creation of provisioning records
+- generation of access tokens or shipment provisioning
+- retrieval of provisionings by order, buyer, or provisioning ID
+
 Additional services will be added as the platform evolves.
 
 ---
@@ -45,6 +54,7 @@ Shared libraries located in the `libs/` directory provide:
 
 - common error handling
 - BOM dependency management
+- shared Kafka producer/consumer configuration
 
 ## Future roadmap
 
