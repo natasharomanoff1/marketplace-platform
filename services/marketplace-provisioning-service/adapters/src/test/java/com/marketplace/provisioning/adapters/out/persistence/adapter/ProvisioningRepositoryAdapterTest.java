@@ -1,6 +1,7 @@
 package com.marketplace.provisioning.adapters.out.persistence.adapter;
 
 import com.marketplace.provisioning.adapters.out.persistence.document.ProvisioningDocument;
+import com.marketplace.provisioning.adapters.out.persistence.mapper.ProvisioningItemPersistenceMapper;
 import com.marketplace.provisioning.adapters.out.persistence.mapper.ProvisioningPersistenceMapper;
 import com.marketplace.provisioning.adapters.out.persistence.repository.ProvisioningRepository;
 import com.marketplace.provisioning.adapters.testdata.ProvisioningDocumentTestDataFactory;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +33,9 @@ class ProvisioningRepositoryAdapterTest {
 
     @Mock
     private ProvisioningPersistenceMapper mapper;
+
+    @Mock
+    private ProvisioningItemPersistenceMapper itemMapper;
 
     @InjectMocks
     private ProvisioningRepositoryAdapter adapter;
@@ -82,6 +87,22 @@ class ProvisioningRepositoryAdapterTest {
 
             assertThat(result).isEqualTo(provisioning);
         }
+
+        @Test
+        void findByOrderId_empty() {
+
+            UUID uuid = UUID.randomUUID();
+            OrderId orderId = new OrderId(uuid);
+
+            when(repository.findByOrderId(uuid.toString()))
+                    .thenReturn(Mono.empty());
+
+            Provisioning result =
+                    adapter.findByOrderId(orderId).block();
+
+            assertThat(result).isNull();
+        }
+
     }
 
     @Nested
@@ -109,6 +130,22 @@ class ProvisioningRepositoryAdapterTest {
 
             assertThat(result).isEqualTo(provisioning);
         }
+
+        @Test
+        void findByBuyerId_empty() {
+
+            UUID uuid = UUID.randomUUID();
+            BuyerId buyerId = new BuyerId(uuid);
+
+            when(repository.findAllByBuyerId(uuid.toString()))
+                    .thenReturn(Flux.empty());
+
+            var result =
+                    adapter.findByBuyerId(buyerId).collectList().block();
+
+            assertThat(result).isEmpty();
+        }
+
     }
 
     @Nested
@@ -136,5 +173,85 @@ class ProvisioningRepositoryAdapterTest {
 
             assertThat(result).isEqualTo(provisioning);
         }
+
+        @Test
+        void findById_empty() {
+
+            UUID uuid = UUID.randomUUID();
+            ProvisioningId id = new ProvisioningId(uuid);
+
+            when(repository.findById(uuid.toString()))
+                    .thenReturn(Mono.empty());
+
+            Provisioning result =
+                    adapter.findById(id).block();
+
+            assertThat(result).isNull();
+        }
+
     }
+
+    @Nested
+    class FindByAccessTokenHashTests {
+
+        @Test
+        void findByAccessTokenHash() {
+
+            String tokenHash = "hash";
+
+            ProvisioningDocument document =
+                    ProvisioningDocumentTestDataFactory.aProvisioningDocument();
+
+            var itemDocument = document.getItems().get(0);
+
+            var domainItem =
+                    ProvisioningTestDataFactory.aProvisioning()
+                            .getItems().get(0);
+
+            when(repository.findItemByAccessTokenHash(tokenHash))
+                    .thenReturn(Mono.just(document));
+
+            when(itemMapper.toProvisioningItem(itemDocument))
+                    .thenReturn(domainItem);
+
+            var result =
+                    adapter.findByAccessTokenHash(tokenHash).block();
+
+            assertThat(result).isEqualTo(domainItem);
+        }
+
+        @Test
+        void findByAccessTokenHash_notFound() {
+
+            String tokenHash = "hash";
+
+            when(repository.findItemByAccessTokenHash(tokenHash))
+                    .thenReturn(Mono.empty());
+
+            var result =
+                    adapter.findByAccessTokenHash(tokenHash).block();
+
+            assertThat(result).isNull();
+        }
+
+        @Test
+        void findByAccessTokenHash_documentWithoutItems() {
+
+            String tokenHash = "hash";
+
+            ProvisioningDocument document =
+                    ProvisioningDocumentTestDataFactory.aProvisioningDocument();
+            document.setItems(List.of());
+
+            when(repository.findItemByAccessTokenHash(tokenHash))
+                    .thenReturn(Mono.just(document));
+
+            var result =
+                    adapter.findByAccessTokenHash(tokenHash).block();
+
+            assertThat(result).isNull();
+        }
+    }
+
+
 }

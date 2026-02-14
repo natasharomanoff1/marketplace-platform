@@ -1,5 +1,6 @@
 package com.marketplace.provisioning.adapters.in.rest.mapper;
 
+import com.marketplace.provisioning.adapters.in.api.model.ProvisioningItem;
 import com.marketplace.provisioning.adapters.mapper.IdMapper;
 import com.marketplace.provisioning.adapters.testdata.ProvisioningTestDataFactory;
 import com.marketplace.provisioning.domain.model.Provisioning;
@@ -61,16 +62,16 @@ class ProvisioningApiMapperTest {
 
             assertThat(result.getItems().get(0))
                     .extracting(
-                            i -> i.getProductId(),
-                            i -> i.getType(),
-                            i -> i.getStatus(),
-                            i -> i.getAccessToken()
+                            ProvisioningItem::getProductId,
+                            ProvisioningItem::getType,
+                            ProvisioningItem::getStatus,
+                            ProvisioningItem::getAccessToken
                     )
                     .containsExactly(
                             provisioning.getItems().get(0).getProductId().getValue().toString(),
                             provisioning.getItems().get(0).getType().name(),
                             provisioning.getItems().get(0).getStatus().name(),
-                            provisioning.getItems().get(0).getAccessToken()
+                            provisioning.getItems().get(0).getAccessTokenHash()
                     );
         }
 

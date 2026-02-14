@@ -1,5 +1,6 @@
 package com.marketplace.provisioning.adapters.out.persistence.adapter;
 
+import com.marketplace.provisioning.adapters.out.persistence.mapper.ProvisioningItemPersistenceMapper;
 import com.marketplace.provisioning.adapters.out.persistence.mapper.ProvisioningPersistenceMapper;
 import com.marketplace.provisioning.adapters.out.persistence.repository.ProvisioningRepository;
 import com.marketplace.provisioning.application.port.out.persistence.ProvisioningRepositoryPort;
@@ -7,6 +8,7 @@ import com.marketplace.provisioning.domain.id.BuyerId;
 import com.marketplace.provisioning.domain.id.OrderId;
 import com.marketplace.provisioning.domain.model.Provisioning;
 import com.marketplace.provisioning.domain.id.ProvisioningId;
+import com.marketplace.provisioning.domain.model.ProvisioningItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -18,6 +20,7 @@ public class ProvisioningRepositoryAdapter implements ProvisioningRepositoryPort
 
     private final ProvisioningRepository repository;
     private final ProvisioningPersistenceMapper mapper;
+    private final ProvisioningItemPersistenceMapper itemMapper;
 
     @Override
     public Mono<Void> save(Provisioning provisioning) {
@@ -46,5 +49,13 @@ public class ProvisioningRepositoryAdapter implements ProvisioningRepositoryPort
 
         return repository.findById(id.getValue().toString())
                 .map(mapper::toProvisioning);
+    }
+
+    @Override
+    public Mono<ProvisioningItem> findByAccessTokenHash(String tokenHash) {
+
+        return repository.findItemByAccessTokenHash(tokenHash)
+                .flatMap(doc -> Mono.justOrEmpty(doc.getItems().stream().findFirst()))
+                .map(itemMapper::toProvisioningItem);
     }
 }

@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProvisioningService {
 
-    private final ProvisioningRepositoryPort repository;
+    private final AccessTokenService accessTokenService;
 
-    public void createProvisioningFromEvent(CreateProvisioningCommand command) {
+    public Provisioning createProvisioning(CreateProvisioningCommand command) {
 
-        Provisioning provisioning = Provisioning.builder()
+        return Provisioning.builder()
                 .id(new ProvisioningId(UUID.randomUUID()))
                 .orderId(command.getOrderId())
                 .buyerId(command.getBuyerId())
@@ -34,7 +34,6 @@ public class ProvisioningService {
                 )
                 .build();
 
-        repository.save(provisioning);
     }
 
     private ProvisioningItem toProvisioningItem(CreateProvisioningCommand.Item item) {
@@ -42,20 +41,22 @@ public class ProvisioningService {
         ProvisioningType type =
                 ProvisioningType.valueOf(item.getProvisioningType());
 
+        String tokenHash = null;
+        Instant expiresAt = null;
+
+        if (type == ProvisioningType.DIGITAL_ACCESS) {
+            // Store only the token hash; the plain token is sent to the buyer
+            String plainToken = accessTokenService.generatePlainToken();
+            tokenHash = accessTokenService.hash(plainToken);
+            expiresAt = Instant.now().plusSeconds(60L * 60 * 24 * 30);
+        }
+
         return ProvisioningItem.builder()
                 .productId(item.getProductId())
                 .type(type)
                 .status(ProvisioningStatus.PENDING)
-                .accessToken(
-                        type == ProvisioningType.DIGITAL_ACCESS
-                                ? UUID.randomUUID().toString()
-                                : null
-                )
-                .expiresAt(
-                        type == ProvisioningType.DIGITAL_ACCESS
-                                ? Instant.now().plusSeconds(60 * 60 * 24 * 30) //30 days
-                                : null
-                )
+                .accessTokenHash(tokenHash)
+                .expiresAt(expiresAt)
                 .build();
     }
 }

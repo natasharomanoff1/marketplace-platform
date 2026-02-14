@@ -2,6 +2,7 @@ package com.marketplace.provisioning.adapters.in.messaging.listener;
 
 import com.marketplace.provisioning.adapters.in.messaging.event.OrderPaidEvent;
 import com.marketplace.provisioning.adapters.in.messaging.mapper.OrderPaidEventMapper;
+import com.marketplace.provisioning.application.port.in.CreateProvisioningUseCase;
 import com.marketplace.provisioning.application.service.ProvisioningService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderPaidKafkaListener {
 
-    private final ProvisioningService provisioningService;
+    private final CreateProvisioningUseCase useCase;
     private final OrderPaidEventMapper mapper;
 
     @KafkaListener(
@@ -25,7 +26,7 @@ public class OrderPaidKafkaListener {
 
         log.info("Received OrderPaidEvent: orderId={}", event.getOrderId());
 
-        provisioningService.createProvisioningFromEvent(
+        useCase.execute(
                 mapper.toCreateProvisioningCommand(event));
     }
 }

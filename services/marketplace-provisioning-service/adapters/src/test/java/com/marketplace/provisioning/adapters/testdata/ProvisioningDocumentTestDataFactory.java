@@ -31,7 +31,7 @@ public final class ProvisioningDocumentTestDataFactory {
                 .productId(UUID.randomUUID().toString())
                 .type(ProvisioningType.DIGITAL_ACCESS)
                 .status(ProvisioningStatus.READY)
-                .accessToken("token-123")
+                .accessTokenHash("token-123")
                 .shipmentId(UUID.randomUUID().toString())
                 .expiresAt(Instant.now())
                 .build();

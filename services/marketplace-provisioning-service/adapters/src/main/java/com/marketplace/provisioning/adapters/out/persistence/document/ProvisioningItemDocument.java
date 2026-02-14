@@ -18,7 +18,7 @@ public class ProvisioningItemDocument {
     private String productId;
     private ProvisioningType type;
     private ProvisioningStatus status;
-    private String accessToken;
+    private String accessTokenHash;
     private String shipmentId;
     private Instant expiresAt;
 }

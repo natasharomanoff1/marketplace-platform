@@ -42,7 +42,7 @@ class ProvisioningItemPersistenceMapperTest {
                             ProvisioningItemDocument::getProductId,
                             ProvisioningItemDocument::getType,
                             ProvisioningItemDocument::getStatus,
-                            ProvisioningItemDocument::getAccessToken,
+                            ProvisioningItemDocument::getAccessTokenHash,
                             ProvisioningItemDocument::getShipmentId,
                             ProvisioningItemDocument::getExpiresAt
                     )
@@ -50,7 +50,7 @@ class ProvisioningItemPersistenceMapperTest {
                             item.getProductId().getValue().toString(),
                             item.getType(),
                             item.getStatus(),
-                            item.getAccessToken(),
+                            item.getAccessTokenHash(),
                             item.getShipmentId().getValue().toString(),
                             item.getExpiresAt()
                     );
@@ -85,7 +85,7 @@ class ProvisioningItemPersistenceMapperTest {
                             r -> r.getProductId().getValue().toString(),
                             ProvisioningItem::getType,
                             ProvisioningItem::getStatus,
-                            ProvisioningItem::getAccessToken,
+                            ProvisioningItem::getAccessTokenHash,
                             r -> r.getShipmentId().getValue().toString(),
                             ProvisioningItem::getExpiresAt
                     )
@@ -93,7 +93,7 @@ class ProvisioningItemPersistenceMapperTest {
                             document.getProductId(),
                             document.getType(),
                             document.getStatus(),
-                            document.getAccessToken(),
+                            document.getAccessTokenHash(),
                             document.getShipmentId(),
                             document.getExpiresAt()
                     );

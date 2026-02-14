@@ -1,13 +1,10 @@
 package com.marketplace.provisioning.adapters.config;
 
-import com.marketplace.provisioning.application.port.in.GetProvisioningByIdUseCase;
-import com.marketplace.provisioning.application.port.in.GetProvisioningByOrderIdUseCase;
-import com.marketplace.provisioning.application.port.in.GetProvisioningsByBuyerIdUseCase;
+import com.marketplace.provisioning.application.port.in.*;
 import com.marketplace.provisioning.application.port.out.persistence.ProvisioningRepositoryPort;
+import com.marketplace.provisioning.application.service.AccessTokenService;
 import com.marketplace.provisioning.application.service.ProvisioningService;
-import com.marketplace.provisioning.application.usecase.GetProvisioningByIdUseCaseImpl;
-import com.marketplace.provisioning.application.usecase.GetProvisioningByOrderIdUseCaseImpl;
-import com.marketplace.provisioning.application.usecase.GetProvisioningsByBuyerIdUseCaseImpl;
+import com.marketplace.provisioning.application.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,9 +34,30 @@ public class ProvisioningServiceConfig {
     }
 
     @Bean
-    public ProvisioningService provisioningService(
-            ProvisioningRepositoryPort repository
+    public CreateProvisioningUseCase createProvisioningUseCase(
+            ProvisioningRepositoryPort repository,
+            ProvisioningService provisioningService
     ) {
-        return new ProvisioningService(repository);
+        return new CreateProvisioningUseCaseImpl(repository, provisioningService);
+    }
+
+    @Bean
+    public ValidateAccessTokenUseCase validateAccessTokenUseCase(
+            ProvisioningRepositoryPort repository,
+            AccessTokenService accessTokenService
+    ) {
+        return new ValidateAccessTokenUseCaseImpl(repository, accessTokenService);
+    }
+
+    @Bean
+    public ProvisioningService provisioningService(
+            AccessTokenService accessTokenService
+    ) {
+        return new ProvisioningService(accessTokenService);
+    }
+
+    @Bean
+    public AccessTokenService accessTokenService() {
+        return new AccessTokenService();
     }
 }

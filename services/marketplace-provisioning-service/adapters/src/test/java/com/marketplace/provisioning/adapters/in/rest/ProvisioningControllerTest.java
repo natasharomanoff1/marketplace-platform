@@ -1,6 +1,5 @@
 package com.marketplace.provisioning.adapters.in.rest;
 
-import com.marketplace.common.errors.GlobalExceptionHandler;
 import com.marketplace.provisioning.adapters.in.api.model.ProvisioningResponse;
 import com.marketplace.provisioning.adapters.in.rest.mapper.ProvisioningApiMapper;
 import com.marketplace.provisioning.application.port.in.GetProvisioningByIdUseCase;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -26,7 +24,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(ProvisioningController.class)
-@Import(GlobalExceptionHandler.class)
 class ProvisioningControllerTest {
 
     @Autowired

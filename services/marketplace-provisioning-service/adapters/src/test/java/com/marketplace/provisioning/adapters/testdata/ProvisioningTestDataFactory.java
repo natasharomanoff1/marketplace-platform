@@ -1,6 +1,5 @@
 package com.marketplace.provisioning.adapters.testdata;
 
-import com.marketplace.provisioning.adapters.out.persistence.document.ProvisioningDocument;
 import com.marketplace.provisioning.domain.enums.ProvisioningStatus;
 import com.marketplace.provisioning.domain.enums.ProvisioningType;
 import com.marketplace.provisioning.domain.id.*;
@@ -38,7 +37,7 @@ public final class ProvisioningTestDataFactory {
                 .productId(new ProductId(UUID.randomUUID()))
                 .type(ProvisioningType.DIGITAL_ACCESS)
                 .status(ProvisioningStatus.READY)
-                .accessToken("token-123")
+                .accessTokenHash("token-123")
                 .shipmentId(new ShipmentId(UUID.randomUUID()))
                 .expiresAt(Instant.now())
                 .build();

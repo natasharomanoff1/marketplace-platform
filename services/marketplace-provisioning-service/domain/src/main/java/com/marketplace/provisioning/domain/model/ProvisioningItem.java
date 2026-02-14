@@ -17,7 +17,7 @@ public class ProvisioningItem {
     private ProductId productId;
     private ProvisioningType type;
     private ProvisioningStatus status;
-    private String accessToken;
+    private String accessTokenHash;
     private ShipmentId shipmentId;
     private Instant expiresAt;
 }
