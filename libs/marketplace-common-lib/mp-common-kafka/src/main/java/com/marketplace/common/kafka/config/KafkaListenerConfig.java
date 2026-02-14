@@ -62,12 +62,14 @@ public class KafkaListenerConfig {
 
         factory.setConcurrency(kafkaProperties.getListener().getConcurrency());
 
-        factory.setBatchListener(true);
+        boolean batch = kafkaProperties.getListener().isBatch();
+
+        factory.setBatchListener(batch);
 
         factory.getContainerProperties().setAckMode(
-                ContainerProperties.AckMode.valueOf(
-                        kafkaProperties.getListener().getAckMode().toUpperCase()
-                )
+                batch
+                        ? ContainerProperties.AckMode.BATCH
+                        : ContainerProperties.AckMode.RECORD
         );
 
         factory.setCommonErrorHandler(errorHandler);

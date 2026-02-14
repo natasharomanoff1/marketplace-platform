@@ -7,6 +7,7 @@ public enum ErrorCode {
 
     LISTING_NOT_FOUND(404, "4000001", ErrorType.NOT_FOUND, "listing.not.found"),
     PROVISIONING_NOT_FOUND(404, "4000002", ErrorType.NOT_FOUND, "provisioning.not.found"),
+    ACCESS_TOKEN_NOT_FOUND(404, "4000003", ErrorType.NOT_FOUND, "access.token.not.found"),
     SYSTEM_ERROR(500, "500000", ErrorType.SYSTEM_ERROR, "system.error");
 
     private final int httpStatus;

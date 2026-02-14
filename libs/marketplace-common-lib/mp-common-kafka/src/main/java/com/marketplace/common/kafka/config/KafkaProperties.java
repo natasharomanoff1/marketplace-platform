@@ -99,9 +99,9 @@ public class KafkaProperties {
         private Integer concurrency = 1;
 
         /**
-         * record / batch
+         * Enable batch listener
          */
-        private String ackMode = "record";
+        private boolean batch = false;
     }
 
     // ---------------- RETRY ----------------

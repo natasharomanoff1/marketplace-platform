@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.marketplace</groupId>
         <artifactId>marketplace-common-lib</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
     </parent>
 
     <artifactId>mp-common-bom</artifactId>
